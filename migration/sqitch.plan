@@ -1,0 +1,5 @@
+%syntax-version=1.0.0
+%project=lyre-API
+
+0000-bdd-initialization 2021-11-09T13:19:21Z Armandine,,, <armandine@DidOrdiDebian> # bdd initialization
+0010-add-update-functions 2021-11-09T13:53:49Z Armandine,,, <armandine@DidOrdiDebian> # Add and update functions
