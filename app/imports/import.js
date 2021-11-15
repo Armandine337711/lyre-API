@@ -6,6 +6,7 @@ const { Client } = require("pg");
 
 const desks = require("./datas/desk.json");
 const meetings = require("./datas/meeting-type.json");
+const dockets = require("./datas/docket.json");
 
 (async () => {
     const client = new Client({
@@ -36,6 +37,16 @@ const meetings = require("./datas/meeting-type.json");
         console.log(result.rows[0].id, result.rows[0].entitled);
     }
     console.log("meeting_types inserted");
+
+    for (const docket of dockets) {
+        const result = await client.query(
+            `INSERT INTO "docket"("docket") VALUES ($1) RETURNING *`,
+            [docket.docket]
+        );
+
+        console.log(result.rows[0].id, result.rows[0].docket);
+    }
+    console.log("dosket inserted");
 
     await client.end();
 })();
