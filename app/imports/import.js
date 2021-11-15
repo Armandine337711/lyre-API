@@ -46,7 +46,7 @@ const dockets = require("./datas/docket.json");
 
         console.log(result.rows[0].id, result.rows[0].docket);
     }
-    console.log("dosket inserted");
+    console.log("docket inserted");
 
     await client.end();
 })();
