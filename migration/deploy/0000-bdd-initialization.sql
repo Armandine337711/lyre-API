@@ -18,7 +18,13 @@ CREATE DOMAIN TEXT_MAIL AS TEXT CHECK(VALUE ~ '(^[a-z\d\.\-\_]+)@{1}([a-z\d\.\-]
 -- TABLES
 -------------------------------
 
-DROP TABLE IF EXISTS "desk", "instrument", "member", "piece", "_m2m_meeting_piece", "_m2m_piece_instrument", "place", "post", "meeting_type", "meeting" CASCADE;
+DROP TABLE IF EXISTS "docket", "desk", "instrument", "member", "piece", "_m2m_meeting_piece", "_m2m_piece_instrument", "place", "post", "meeting_type", "meeting" CASCADE;
+
+--rôle
+CREATE TABLE IF NOT EXISTS "docket"(
+"id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+"docket" TEXT_ONLY NOT NULL
+);
 
 --pupitre
 CREATE TABLE IF NOT EXISTS "desk"(
@@ -42,6 +48,7 @@ CREATE TABLE IF NOT EXISTS "member"(
 "password" TEXT NOT NULL,
 "desk_id" INT REFERENCES "desk"("id"),
 "last_connection" TIMESTAMPTZ DEFAULT NOW(),
+"docket_id" INT NOT NULL REFERENCES "docket"("id"),
 "hide" BOOLEAN DEFAULT false
 );
 

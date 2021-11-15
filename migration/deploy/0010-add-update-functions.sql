@@ -6,7 +6,15 @@ BEGIN;
 -- ADD FUNCTIONS
 -------------------------------
 
-DROP FUNCTION IF EXISTS "desk_add", "instrument_add", "member_add", "piece_add", "_m2m_piece_instrument", "place_add", "post_add", "meeting_type_add", "meeting_add", "_m2m_meeting_piece_add";
+DROP FUNCTION IF EXISTS "docket_add", "desk_add", "instrument_add", "member_add", "piece_add", "_m2m_piece_instrument", "place_add", "post_add", "meeting_type_add", "meeting_add", "_m2m_meeting_piece_add";
+
+CREATE FUNCTION "docket_add"(newDatas json) RETURNS SETOF "docket" AS
+$$
+INSERT INTO "docket"("docket") VALUES (
+newDatas ->> 'docket'
+) RETURNING *;
+$$
+LANGUAGE sql VOLATILE STRICT;
 
 CREATE FUNCTION "desk_add"(newDatas json) RETURNS SETOF "desk" AS
 $$
@@ -27,12 +35,13 @@ LANGUAGE sql VOLATILE STRICT;
 
 CREATE FUNCTION "member_add"(newDatas json) RETURNS SETOF "member" AS
 $$
-INSERT INTO "member"("firstname", "lastname", "email", "password", "desk_id") VALUES (
+INSERT INTO "member"("firstname", "lastname", "email", "password", "desk_id", "docket_id") VALUES (
 newDatas ->> 'firstname',
 newDatas ->> 'lastname',
 newDatas ->> 'email',
 newDatas ->> 'password',
-(newDatas ->> 'desk_id')::int
+(newDatas ->> 'desk_id')::int,
+(newDatas ->> 'docket_id')::int
 ) RETURNING *;
 $$
 LANGUAGE sql VOLATILE STRICT;
@@ -105,10 +114,18 @@ LANGUAGE sql VOLATILE STRICT;
 -------------------------------
 -- UPDATE FUNCTIONS
 -------------------------------
+CREATE FUNCTION "docket_update"(updatedDatas json) RETURNS SETOF "docket" AS
+$$
+UPDATE "docket" SET
+"docket" = updatedDatas ->> 'docket'
+ RETURNING *;
+$$
+LANGUAGE sql VOLATILE STRICT;
+
 CREATE FUNCTION "desk_update"(updatedDatas json) RETURNS SETOF "desk" AS
 $$
 UPDATE "desk" SET
-"desk" = updatedDatas --> 'desk,
+"desk" = updatedDatas ->> 'desk'
 WHERE "id" = (updatedDatas ->> 'id')::int
  RETURNING *;
 $$
@@ -132,6 +149,7 @@ UPDATE "member" SET
 "email" = updatedDatas ->> 'email',
 "password" = updatedDatas ->> 'password',
 "desk_id" = (updatedDatas ->> 'desk_id')::int,
+"docket_id" = (updatedDatas ->> 'docket_id')::int,
 "hide" = (updatedDatas ->> 'hide')::boolean
 WHERE "id" = (updatedDatas ->> 'id')::int
  RETURNING *;
