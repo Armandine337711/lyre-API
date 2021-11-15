@@ -1,6 +1,12 @@
 [
     {
-        "desk": "Flûtes, Hautbois, Basson"
+        "desk": "Flûtes"
+    },
+    {
+        "desk": "Hautbois - Cor Anglais"
+    },
+    {
+        "desk": "Basson"
     },
     {
         "desk": "Clarinettes"
@@ -9,7 +15,7 @@
         "desk": "Saxophones"
     },
     {
-        "desk": "Trompettes, Buggles, Cornets"
+        "desk": "Trompettes - Buggles - Cornets"
     },
     {
         "desk": "Cors"
