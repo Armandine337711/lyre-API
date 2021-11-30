@@ -1,4 +1,5 @@
 const genericDataMapper = require("../datamapper/genericDataMapper");
+const bcrypt = require('bcrypt')
 
 const genericController = {
     async getAll(request, response, next) {
@@ -32,6 +33,11 @@ const genericController = {
         try {
             const { entity } = request.params;
             const newDatas = request.body;
+
+            if (entity === 'member') {
+                const hashedPassword = bcrypt.hashSync(newDatas.password, 10);
+                newDatas.password = hashedPassword;
+            }
 
             const data = await genericDataMapper.createOne(entity, newDatas);
             if (data) {
